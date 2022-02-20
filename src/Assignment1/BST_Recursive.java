@@ -12,13 +12,17 @@ public class BST_Recursive {
         return node;
     }
 
-    private boolean search(TreeNode<Integer> node, Integer key){
+    private boolean find(TreeNode<Integer> node, Integer key){
         if(node == null) return false;
-        else if(node.data == key) return true;
-        else if(key < node.data){
-            return search(node.left, key);
+        else
+        {
+            if(node.data == key) return true;
+            else if(key < node.data){
+                return find(node.left, key);
+            }else{
+                return find(node.right, key);
+            }
         }
-        return search(node.right, key);
     }
 
 
