@@ -87,7 +87,6 @@ public class Driver {
                 System.out.println("BYE!");
                 break;
             }
-
         }
         sc.close();
     }
