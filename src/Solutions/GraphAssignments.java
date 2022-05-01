@@ -1,7 +1,4 @@
 package Solutions;
-
-import Graph.Graph;
-
 import java.util.Arrays;
 
 class GraphLib{
@@ -94,8 +91,8 @@ class GraphLib{
         }
     }
 
-    class GraphAlgorithms{
-        public static class MinimumSpanningTree{
+    static class GraphAlgorithms{
+        static class MinimumSpanningTree{
             public int cost;
             public Graph graph;
 
@@ -125,26 +122,29 @@ class GraphLib{
             key[0] = 0; parent[0] = -1;
 
             for (int i = 0; i < vertexCount; i++){
-                    int u = -1;
-                    // finding the minimum adjacent edge
-                    for (int v = 0; v < vertexCount; v++){
-                        if (((u == -1) || key[v] < key[u]) && !vis[v]){
-                            u = v;
+                int u = -1;
+                // finding the minimum adjacent edge
+                for (int v = 0; v < vertexCount; v++){
+                    if (((u == -1) || (key[v] < key[u])) && !vis[v]){
+                        u = v;
+                        System.out.println(u);
+                    }
+                }
+
+                res.cost += key[u];
+                vis[u] = true;
+
+                // update the adjacent vertex accordingly
+                for (int v = 0; v < vertexCount; v++){
+                    if (graph.edgeBetween(u, v)){
+
+                        if (!vis[v] && key[v] > graph.get(u, v)){
+                            System.out.println("Updated " + v + " to " + graph.get(u, v));
+                            parent[v] = u;
+                            key[v] = graph.get(u, v);
                         }
                     }
-
-                    res.cost += key[u];
-                    vis[u] = true;
-
-                    // update the adjacent vertex accordingly
-                    for (int v = 0; v < vertexCount; v++){
-                        if (graph.edgeBetween(u, v)){
-                            if (!vis[v] && key[v] > graph.get(u, v)){
-                                parent[v] = u;
-                                key[v] = graph.get(u, v);
-                            }
-                        }
-                    }
+                }
             }
 
 
@@ -162,12 +162,13 @@ class GraphLib{
 public class GraphAssignments {
     public static void main(String[] args) {
         GraphLib.Graph g = new GraphLib.AdjecencyMatrix(3);
-        g.put(0, 1, 5);
-        g.put(1, 2, 100);
-        g.put(0, 2, 20);
-        g.put(1, 3, 10);
-        g.put(2, 3, 5);
+        g.put(0, 1, 10);
+        g.put(0, 2, 100);
+        g.put(1, 2, 30);
+        g.put(2, 3, 10);
+        g.put(1, 3, 500);
 
+        System.out.println(g.toString());
         System.out.println(GraphLib.GraphAlgorithms.buildMinimumSpanningTree(g));
 
     }
