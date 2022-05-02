@@ -152,6 +152,49 @@ class GraphLib{
             return res;
         }
 
+        private static int minDistance(int[] dist, boolean sptSet[], int V){
+            int min = Integer.MAX_VALUE, min_index = -1;
+
+            for (int v = 0; v < V; v++)
+                if (sptSet[v] == false && dist[v] <= min) {
+                    min = dist[v];
+                    min_index = v;
+                }
+
+            return min_index;
+        }
+
+        private static void printSolution(int dist[], int V)
+        {
+            System.out.println("Vertex \t\t Distance from Source");
+            for (int i = 0; i < V; i++)
+                System.out.println(i + " \t\t " + dist[i]);
+        }
+
+        public static void DijakstrasAlgorithm(Graph graph, int src){
+            int vertexCount = graph.vertexCount();
+            int[] dist = new int[vertexCount];
+            boolean[] sptSet = new boolean[vertexCount];
+            Arrays.fill(dist, Integer.MAX_VALUE);
+            Arrays.fill(sptSet, false);
+
+            dist[src] = 0;
+
+            for (int count = 0; count < vertexCount; count++){
+                int u = minDistance(dist, sptSet, vertexCount);
+                sptSet[u] = true;
+
+                for (int v = 0; v < vertexCount; v++){
+                    if (!sptSet[v] &&  graph.edgeBetween(u, v) &&  dist[u] != Integer.MAX_VALUE && (dist[u] + graph.get(u, v) < dist[v])){
+                        dist[v] = dist[u] + graph.get(u, v);
+                    }
+                }
+
+            }
+
+            printSolution(dist, vertexCount);
+        }
+
     }
 }
 
@@ -169,7 +212,8 @@ public class GraphAssignments {
         g.put(1, 3, 500);
 
         System.out.println(g.toString());
-        System.out.println(GraphLib.GraphAlgorithms.buildMinimumSpanningTree(g));
+//        System.out.println(GraphLib.GraphAlgorithms.buildMinimumSpanningTree(g));
+        GraphLib.GraphAlgorithms.DijakstrasAlgorithm(g, 0);
 
     }
 }
